@@ -1,7 +1,7 @@
 ﻿using Assets.Tests.Performance;
 using UnityEngine;
 
-public class Runner : MonoBehaviour {
+public class Example : MonoBehaviour {
 
 	void Start () {
 		
