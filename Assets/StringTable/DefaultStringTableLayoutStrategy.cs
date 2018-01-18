@@ -2,58 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assets.Tests.Performance
+namespace StringTable
 {
-    public class StringTable
+    public class DefaultStringTableLayoutStrategy : IStringTableLayoutStrategy
     {
-        private string[] header;
-        private readonly List<string[]> rows = new List<string[]>();
-        private string title;
-
-        public StringTable Title(string title)
-        {
-            this.title = title;
-            return this;
-        }
-
-        public StringTable Header(params string[] labels)
-        {
-            header = labels;
-            return this;
-        }
-
-        public StringTable Row(params string[] labels)
-        {
-            rows.Add(labels);
-            return this;
-        }
-
-        public string Print(IStringTableLayoutStrategy layoutStrategy = null)
-        {
-            if (layoutStrategy == null)
-            {
-                layoutStrategy = new DefaultStringTableStategy();
-            }
-
-            layoutStrategy.SetTitle(title);
-            layoutStrategy.SetHeader(header);
-            layoutStrategy.SetRows(rows);
-
-            return layoutStrategy.Layout();
-        }
-    }
-
-    public interface IStringTableLayoutStrategy
-    {
-        void SetTitle(string title);
-        void SetHeader(string[] header);
-        void SetRows(List<string[]> rows);
-        string Layout(int padding = 0);
-    }
-
-    public class DefaultStringTableStategy : IStringTableLayoutStrategy
-    {
-        private string title;
+        
+      private string title;
         private string[] header;
         private List<string[]> rows = new List<string[]>();
 
@@ -70,7 +24,7 @@ namespace Assets.Tests.Performance
             Center
         }
 
-        public DefaultStringTableStategy()
+        public DefaultStringTableLayoutStrategy()
         {
             outerBorderChar = '|';
             verticalChar = ',';

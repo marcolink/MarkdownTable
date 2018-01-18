@@ -1,11 +1,10 @@
-﻿using Assets.Tests.Performance;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Example : MonoBehaviour {
 
 	void Start () {
 		
-		var stringTable = new StringTable();
+		var stringTable = new StringTable.StringTableBuilder();
 		
 		var result = stringTable
 			.Title("Test Title")
