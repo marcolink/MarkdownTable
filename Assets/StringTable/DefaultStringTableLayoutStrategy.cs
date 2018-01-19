@@ -86,9 +86,9 @@ namespace StringTable
                 output.AppendLine(HorizontalLine(tableWidth));
                 output.AppendLine(Row(header, maxCols, tableWidth, padding));
             }
-    
+
             output.AppendLine(HorizontalLine(tableWidth));
-            
+
             rows.ForEach(row =>
             {
                 output.AppendLine(Row(row, maxCols, tableWidth, padding));
@@ -132,15 +132,16 @@ namespace StringTable
         private string TitleRow(int tableWidth)
         {
             var format = leftMargin + outerBorderChar + "{0}" + outerBorderChar;
-            if (tableWidth > title.Length)
+            if (!string.IsNullOrEmpty(title) && tableWidth > title.Length)
             {
                 var space = tableWidth - title.Length - 1;
                 var leftSpace = space / 2;
                 var rightSpace = space - leftSpace;
 
-                Console.WriteLine("table:{0}, title:{1}, space:{2}, left:{3}, right:{4}", tableWidth, title.Length, space, leftSpace, rightSpace);
-                
-                format = string.Format(format, Padding(leftSpace-1, '*') + "{0}" + Padding(rightSpace, '*'));
+                //Console.WriteLine("table:{0}, title:{1}, space:{2}, left:{3}, right:{4}", tableWidth, title.Length, space, leftSpace, rightSpace);
+
+                format = string.Format(format,
+                    Padding(leftSpace - 2, '*') + Padding(1) + "{0}" + Padding(1) + Padding(rightSpace - 1, '*'));
             }
 
             return string.Format(format, title);
@@ -177,7 +178,7 @@ namespace StringTable
 
         private string Padding(int size, char paddingChar = ' ')
         {
-            return new string(paddingChar, size);
+            return new string(paddingChar, Math.Max(size, 0));
         }
 
         #endregion
