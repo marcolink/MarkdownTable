@@ -17,7 +17,7 @@ namespace StringTable
         {
             measurement.SetTitle("hello world");
             Assert.AreEqual(13, measurement.TableWidth());
-            Assert.AreEqual(17, measurement.TableWidth(2));
+            Assert.AreEqual(13, measurement.TableWidth(2));
         }
         
         [Test]
@@ -25,8 +25,8 @@ namespace StringTable
         {
             measurement.SetTitle("hello world");
             measurement.SetHeader("one", "two", "three", "four");
-            Assert.AreEqual(17, measurement.TableWidth());
-            Assert.AreEqual(33, measurement.TableWidth(2));
+            Assert.AreEqual(20, measurement.TableWidth());
+            Assert.AreEqual(28, measurement.TableWidth(1));
         }
         
         [Test]
@@ -35,8 +35,8 @@ namespace StringTable
             measurement.SetTitle("hello world");
             measurement.SetHeader("one", "two", "three", "four");
             measurement.AddRow("one", "two", "three", "four", "six");
-            Assert.AreEqual(20, measurement.TableWidth());
-            Assert.AreEqual(30, measurement.TableWidth(1));
+            Assert.AreEqual(24, measurement.TableWidth());
+            Assert.AreEqual(34, measurement.TableWidth(1));
         }
         
         [Test]

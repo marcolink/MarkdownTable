@@ -44,7 +44,7 @@ namespace StringTable
                 result += MaxColumnWidth(i, padding) + 1;
             }
 
-            if (title != null && title.Length == 0 && title.Length + 2 > result)
+            if (!string.IsNullOrEmpty(title) && title.Length + 2 > result)
             {
                 result = title.Length + 2;
             }
