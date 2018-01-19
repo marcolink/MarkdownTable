@@ -38,7 +38,7 @@ namespace StringTable
                 .SetHeader(header)
                 .SetRows(rows);
 
-            return layoutStrategy.Layout();
+            return layoutStrategy.Layout(1);
         }
     }
 }

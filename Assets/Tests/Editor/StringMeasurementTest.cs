@@ -50,6 +50,18 @@ namespace StringTable
             Assert.AreEqual(12, measurement.MaxColumnWidth(1, 2));
             Assert.AreEqual(17, measurement.MaxColumnWidth(3));
         }
+        
+        [Test]
+        public void Measure_MaxColumnWidth_WidthHeaderAndRows2()
+        {
+            measurement.SetHeader("onehundreddollar", "two face", "three", "four");
+            measurement.AddRow("one and one", "two", "three", "four", "six");
+            measurement.AddRow("", "two", "three", "four on the floor", "six");
+            Assert.AreEqual(16, measurement.MaxColumnWidth(0));
+            Assert.AreEqual(8, measurement.MaxColumnWidth(1));
+            Assert.AreEqual(12, measurement.MaxColumnWidth(1, 2));
+            Assert.AreEqual(17, measurement.MaxColumnWidth(3));
+        }
 
         [Test]
         public void Measure_MaxColumns()

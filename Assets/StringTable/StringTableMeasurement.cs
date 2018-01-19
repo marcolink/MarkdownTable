@@ -65,8 +65,7 @@ namespace StringTable
                 var colWidth = row[Math.Min(index, row.Length - 1)].Length + 2 * padding;
                 width = colWidth > width ? colWidth : width;
             });
-
-
+            
             return width;
         }
 
