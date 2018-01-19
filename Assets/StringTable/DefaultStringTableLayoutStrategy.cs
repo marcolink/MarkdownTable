@@ -132,7 +132,7 @@ namespace StringTable
         private string TitleRow(int tableWidth)
         {
             var format = leftMargin + outerBorderChar + "{0}" + outerBorderChar;
-            if (!string.IsNullOrEmpty(title) && tableWidth > title.Length)
+            if (!string.IsNullOrEmpty(title) && tableWidth > title.Length  + 3 )
             {
                 var space = tableWidth - title.Length - 1;
                 var leftSpace = space / 2;
@@ -149,6 +149,8 @@ namespace StringTable
 
         private string Row(string[] row, int maxCols, int tableWidth, int padding = 0, Align align = Align.Left)
         {
+            //Todo: respect tableWidth issue:#2
+            
             rowBuilder.Length = 0;
             rowBuilder.Append(leftMargin);
             rowBuilder.Append(outerBorderChar);
