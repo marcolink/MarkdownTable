@@ -33,13 +33,12 @@ namespace StringTable
                 layoutStrategy = new DefaultStringTableLayoutStrategy();
             }
 
-            layoutStrategy.SetTitle(title);
-            layoutStrategy.SetHeader(header);
-            layoutStrategy.SetRows(rows);
+            layoutStrategy
+                .SetTitle(title)
+                .SetHeader(header)
+                .SetRows(rows);
 
             return layoutStrategy.Layout();
         }
     }
-
-    
 }

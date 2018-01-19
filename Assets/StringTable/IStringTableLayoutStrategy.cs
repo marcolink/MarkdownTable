@@ -2,11 +2,16 @@
 
 namespace StringTable
 {
-    public interface IStringTableLayoutStrategy
+    public interface IStringTableLayoutStrategy : IStringTable
     {
-        void SetTitle(string title);
-        void SetHeader(string[] header);
-        void SetRows(List<string[]> rows);
         string Layout(int padding = 0);
+    }
+    
+    public interface IStringTable
+    {
+        IStringTable SetTitle(string title);
+        IStringTable SetHeader(params string[] header);
+        IStringTable AddRow(params string[] labels);
+        IStringTable SetRows(List<string[]> rows);
     }
 }
