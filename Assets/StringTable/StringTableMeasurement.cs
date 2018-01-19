@@ -36,11 +36,17 @@ namespace StringTable
         public int TableWidth(int padding = 0)
         {
             var result = 1;
+
             var colsCount = MaxCols();
 
-            for (int i = 0; i < colsCount; i++)
+            for (var i = 0; i < colsCount; i++)
             {
                 result += MaxColumnWidth(i, padding) + 1;
+            }
+
+            if (title != null && title.Length == 0 && title.Length + 2 > result)
+            {
+                result = title.Length + 2;
             }
             
             return result;
@@ -68,7 +74,7 @@ namespace StringTable
         {
             var debugRow = new List<int>();
             var maxCols = MaxCols();
-            for (int i = 0; i < maxCols; i++)
+            for (var i = 0; i < maxCols; i++)
             {
                 debugRow.Add(MaxColumnWidth(i, padding));
             }

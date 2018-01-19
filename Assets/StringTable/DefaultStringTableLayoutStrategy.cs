@@ -9,7 +9,7 @@ namespace StringTable
     public class DefaultStringTableLayoutStrategy : IStringTableLayoutStrategy
     {
         private string title;
-        private string[] header = {};
+        private string[] header = { };
         private List<string[]> rows = new List<string[]>();
 
         private readonly char verticalChar;
@@ -33,7 +33,6 @@ namespace StringTable
             //Todo: create config object and setter
             outerBorderChar = '|';
             verticalChar = '|';
-            horizontalChar = '-';
             leftMargin = " ";
             this.debug = debug;
         }
@@ -74,12 +73,22 @@ namespace StringTable
             var output = new StringBuilder();
             var tableWidth = measurement.TableWidth(padding);
             var maxCols = measurement.MaxCols();
-            var debugRow = measurement.SizeRow(padding);
 
-            output.AppendLine(leftMargin);
+            if (!string.IsNullOrEmpty(title))
+            {
+                output.AppendLine(leftMargin);
+                output.AppendLine(HorizontalLine(tableWidth));
+                output.AppendLine(TitleRow(tableWidth));
+            }
+
+            if (header.Length > 0)
+            {
+                output.AppendLine(HorizontalLine(tableWidth));
+                output.AppendLine(Row(header, maxCols, tableWidth, padding));
+            }
+    
             output.AppendLine(HorizontalLine(tableWidth));
-            output.AppendLine(Row(header, maxCols, tableWidth, padding));
-            output.AppendLine(HorizontalLine(tableWidth));
+            
             rows.ForEach(row =>
             {
                 output.AppendLine(Row(row, maxCols, tableWidth, padding));
@@ -92,6 +101,7 @@ namespace StringTable
 
             if (debug)
             {
+                var debugRow = measurement.SizeRow(padding);
                 var calculatedWidth = debugRow.Sum() + debugRow.Length - 1 + 2;
 
                 output.AppendLine(leftMargin);
@@ -114,9 +124,26 @@ namespace StringTable
 
         #region Creation
 
-        private string HorizontalLine(int tableWidth)
+        private string HorizontalLine(int tableWidth, char spaceChar = '-')
         {
-            return string.Format("{0}{1}", leftMargin, new string(horizontalChar, tableWidth));
+            return string.Format("{0}{1}", leftMargin, new string(spaceChar, tableWidth));
+        }
+
+        private string TitleRow(int tableWidth)
+        {
+            var format = leftMargin + outerBorderChar + "{0}" + outerBorderChar;
+            if (tableWidth > title.Length)
+            {
+                var space = tableWidth - title.Length - 1;
+                var leftSpace = space / 2;
+                var rightSpace = space - leftSpace;
+
+                Console.WriteLine("table:{0}, title:{1}, space:{2}, left:{3}, right:{4}", tableWidth, title.Length, space, leftSpace, rightSpace);
+                
+                format = string.Format(format, Padding(leftSpace-1, '*') + "{0}" + Padding(rightSpace, '*'));
+            }
+
+            return string.Format(format, title);
         }
 
         private string Row(string[] row, int maxCols, int tableWidth, int padding = 0, Align align = Align.Left)
@@ -148,9 +175,9 @@ namespace StringTable
             return rowBuilder.ToString();
         }
 
-        private string Padding(int size)
+        private string Padding(int size, char paddingChar = ' ')
         {
-            return new string(' ', size);
+            return new string(paddingChar, size);
         }
 
         #endregion
