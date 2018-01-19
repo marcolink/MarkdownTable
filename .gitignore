@@ -6,6 +6,7 @@
 /Assets/AssetStoreTools*
 /UnityPackageManager/
 .idea/
+Wooga.JsonPerformance/Assets/Plugins/Editor/JetBrains
 
 # Visual Studio 2015 cache directory
 /.vs/
