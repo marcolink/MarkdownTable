@@ -26,18 +26,26 @@ namespace StringTable
             return this;
         }
 
-        public string Print(IStringTableLayoutStrategy layoutStrategy = null)
+        public StringTableBuilder Reset()
+        {
+            header = new string[]{};
+            title = null;
+            rows.Clear();
+            return this;
+        }
+
+        public string Print(IStringTableLayoutStrategy layoutStrategy = null, bool debug = false)
         {
             if (layoutStrategy == null)
             {
-                layoutStrategy = new DefaultStringTableLayoutStrategy();
+                layoutStrategy = new DefaultStringTableLayoutStrategy(debug);
             }
 
             layoutStrategy
                 .SetTitle(title)
                 .SetHeader(header)
                 .SetRows(rows);
-
+                
             return layoutStrategy.Layout(1);
         }
     }

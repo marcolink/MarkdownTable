@@ -35,20 +35,15 @@ namespace StringTable
 
         public int TableWidth(int padding = 0)
         {
-            var width = padding * 2;
-            if (!string.IsNullOrEmpty(title))
+            var result = 1;
+            var colsCount = MaxCols();
+
+            for (int i = 0; i < colsCount; i++)
             {
-                width = title.Length + padding * 2;
+                result += MaxColumnWidth(i, padding) + 1;
             }
-
-            var headerWidth = RowWidth(header, padding);
-            width = headerWidth > width ? headerWidth : width;
-
-            var rowsWidth = RowsWidth(rows, padding);
-            width = rowsWidth > width ? rowsWidth : width;
-
-            //Todo: calcualte on borderCharWidth
-            return width + 2;
+            
+            return result;
         }
 
         public int MaxColumnWidth(int index, int padding = 0)
@@ -68,31 +63,17 @@ namespace StringTable
             
             return width;
         }
-
-        private static int RowWidth(string[] row, int padding = 0)
+        
+        public int[] SizeRow(int padding)
         {
-            var result = padding * 2;
-            if (row != null && row.Length > 0)
+            var debugRow = new List<int>();
+            var maxCols = MaxCols();
+            for (int i = 0; i < maxCols; i++)
             {
-                result = string.Join("", row).Length + row.Length * 2 * padding;
+                debugRow.Add(MaxColumnWidth(i, padding));
             }
 
-            return result;
-        }
-
-        private static int RowsWidth(List<string[]> rows, int padding)
-        {
-            var result = padding * 2;
-            if (rows != null && rows.Count > 0)
-            {
-                rows.ForEach(row =>
-                {
-                    var rowWidth = RowWidth(row, padding);
-                    result = rowWidth > result ? rowWidth : result;
-                });
-            }
-
-            return result;
+            return debugRow.ToArray();
         }
 
         public int MaxCols()

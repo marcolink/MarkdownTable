@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace StringTable
@@ -7,15 +9,18 @@ namespace StringTable
     public class DefaultStringTableLayoutStrategy : IStringTableLayoutStrategy
     {
         private string title;
-        private string[] header;
+        private string[] header = {};
         private List<string[]> rows = new List<string[]>();
 
-        private char verticalChar;
-        private char horizontalChar;
-        private char outerBorderChar;
+        private readonly char verticalChar;
+        private readonly char horizontalChar;
+        private readonly char outerBorderChar;
+        private readonly string leftMargin;
 
         private readonly StringBuilder rowBuilder = new StringBuilder();
-        private StringTableMeasurement measurement = new StringTableMeasurement();
+        private readonly StringTableMeasurement measurement = new StringTableMeasurement();
+
+        private bool debug;
 
         private enum Align
         {
@@ -23,11 +28,14 @@ namespace StringTable
             Right,
         }
 
-        public DefaultStringTableLayoutStrategy()
+        public DefaultStringTableLayoutStrategy(bool debug = false)
         {
+            //Todo: create config object and setter
             outerBorderChar = '|';
             verticalChar = '|';
             horizontalChar = '-';
+            leftMargin = " ";
+            this.debug = debug;
         }
 
         #region Interface
@@ -60,14 +68,15 @@ namespace StringTable
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-                
+
             measurement.SetTitle(title).SetHeader(header).SetRows(rows);
 
             var output = new StringBuilder();
             var tableWidth = measurement.TableWidth(padding);
             var maxCols = measurement.MaxCols();
+            var debugRow = measurement.SizeRow(padding);
 
-            output.AppendLine("");
+            output.AppendLine(leftMargin);
             output.AppendLine(HorizontalLine(tableWidth));
             output.AppendLine(Row(header, maxCols, tableWidth, padding));
             output.AppendLine(HorizontalLine(tableWidth));
@@ -76,13 +85,28 @@ namespace StringTable
                 output.AppendLine(Row(row, maxCols, tableWidth, padding));
                 output.AppendLine(HorizontalLine(tableWidth));
             });
-            output.AppendLine("");
-            output.AppendLine(string.Format(" Count: {0}", rows.Count));
-            
+            output.AppendLine(leftMargin);
+            output.AppendLine(string.Format("{1}Count: {0}", rows.Count, leftMargin));
+
             stopWatch.Stop();
-            
-            output.AppendLine(string.Format(" Time(ms): {0}", stopWatch.ElapsedMilliseconds));
-            
+
+            if (debug)
+            {
+                var calculatedWidth = debugRow.Sum() + debugRow.Length - 1 + 2;
+
+                output.AppendLine(leftMargin);
+                output.AppendLine(string.Format("{0}Sizing:", leftMargin));
+                output.AppendLine(HorizontalLine(tableWidth));
+                output.AppendLine(Row(debugRow.Select(v => v.ToString()).ToArray(), maxCols, tableWidth, padding));
+                output.AppendLine(HorizontalLine(tableWidth));
+                output.AppendLine(string.Format("{1}Time(ms): {0}", stopWatch.ElapsedMilliseconds, leftMargin));
+                output.AppendLine(string.Format("{1}Padding: {0}", padding, leftMargin));
+                output.AppendLine(string.Format("{1}Table Width: {0}", tableWidth, leftMargin));
+                output.AppendLine(string.Format("{1}Columns Count: {0}", maxCols, leftMargin));
+                output.AppendLine(string.Format("{1}Valid table width: {0} == {2}", tableWidth, leftMargin,
+                    calculatedWidth));
+            }
+
             return output.ToString();
         }
 
@@ -92,20 +116,20 @@ namespace StringTable
 
         private string HorizontalLine(int tableWidth)
         {
-            return " " + new string(horizontalChar, tableWidth);
+            return string.Format("{0}{1}", leftMargin, new string(horizontalChar, tableWidth));
         }
 
         private string Row(string[] row, int maxCols, int tableWidth, int padding = 0, Align align = Align.Left)
         {
             rowBuilder.Length = 0;
-            rowBuilder.Append(" ");
+            rowBuilder.Append(leftMargin);
             rowBuilder.Append(outerBorderChar);
 
             for (var i = 0; i < row.Length; i++)
             {
-                var maxColWidth = measurement.MaxColumnWidth(i, padding);
-                var format = "{0,-"+ maxColWidth + "}";
-                
+                var maxColWidth = measurement.MaxColumnWidth(i);
+                var format = "{0,-" + maxColWidth + "}";
+
                 rowBuilder.Append(Padding(padding));
                 rowBuilder.Append(string.Format(format, row[i]));
                 rowBuilder.Append(Padding(padding));
@@ -116,11 +140,8 @@ namespace StringTable
             while (j++ < maxCols - 1)
             {
                 var maxColWidth = measurement.MaxColumnWidth(j, padding);
-                var format = "{0,"+ maxColWidth + "}";
-                rowBuilder.Append(Padding(padding));
-                rowBuilder.Append(Padding(padding));
-                rowBuilder.Append(Padding(padding));
-                rowBuilder.Append(string.Format(format, j == maxCols - 1 ? outerBorderChar : verticalChar));
+                rowBuilder.Append(Padding(maxColWidth));
+                rowBuilder.Append(j == maxCols - 1 ? outerBorderChar : verticalChar);
                 j++;
             }
 
