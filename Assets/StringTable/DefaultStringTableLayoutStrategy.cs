@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace StringTable
@@ -57,6 +58,9 @@ namespace StringTable
 
         public string Layout(int padding = 0)
         {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+                
             measurement.SetTitle(title).SetHeader(header).SetRows(rows);
 
             var output = new StringBuilder();
@@ -73,7 +77,11 @@ namespace StringTable
                 output.AppendLine(HorizontalLine(tableWidth));
             });
             output.AppendLine("");
-            output.AppendFormat(" Count: {0}", rows.Count);
+            output.AppendLine(string.Format(" Count: {0}", rows.Count));
+            
+            stopWatch.Stop();
+            
+            output.AppendLine(string.Format(" Time(ms): {0}", stopWatch.ElapsedMilliseconds));
             
             return output.ToString();
         }
