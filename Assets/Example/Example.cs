@@ -9,7 +9,7 @@ public class Example : MonoBehaviour
 
         var result = stringTable
             .Title("Garage")
-            .Header("Name", "Manufacture", "Type", "year")
+            .Header("Name", "Manufacture", "Type", "Year")
             .Row("Mary", "Aston Martin", "DB7", "1999")
             .Row("Madeline", "Cadilac", "Eldorado", "1959")
             .Row("Stephanie", "Chevrolet", "Bel Air", "1957")

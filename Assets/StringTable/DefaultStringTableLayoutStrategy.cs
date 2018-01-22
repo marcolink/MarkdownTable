@@ -11,13 +11,6 @@ namespace StringTable
         private readonly string leftMargin;
 
         private readonly StringBuilder rowBuilder = new StringBuilder();
-        private readonly StringTableMeasurement measurement = new StringTableMeasurement();
-
-        private enum Align
-        {
-            Left,
-            Right,
-        }
 
         public DefaultStringTableLayoutStrategy(bool debug = false)
         {
@@ -29,11 +22,10 @@ namespace StringTable
 
         public override string Layout(int padding = 0)
         {
-            measurement.SetTitle(title).SetHeader(header).SetRows(rows);
 
             var output = new StringBuilder();
-            var tableWidth = measurement.TableWidth(padding);
-            var maxCols = measurement.MaxCols();
+            var tableWidth = TableWidth(padding);
+            var maxCols = MaxColumns();
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -79,7 +71,7 @@ namespace StringTable
             var rightSpace = space - leftSpace;
 
             format = string.Format(format,
-                Padding(leftSpace - 2, '*') + Padding(1) + "{0}" + Padding(1) + Padding(rightSpace - 1, '*'));
+                Fill(leftSpace - 2, '*') + Fill(1) + "{0}" + Fill(1) + Fill(rightSpace - 1, '*'));
 
             return string.Format(format, title);
         }
@@ -94,30 +86,30 @@ namespace StringTable
 
             for (var i = 0; i < row.Length; i++)
             {
-                var maxColWidth = measurement.MaxColumnWidth(i);
+                var maxColWidth = ColumnWidth(i);
                 var format = "{0,-" + maxColWidth + "}";
 
-                rowBuilder.Append(Padding(padding));
+                rowBuilder.Append(Fill(padding));
                 rowBuilder.Append(string.Format(format, row[i]));
-                rowBuilder.Append(Padding(padding));
+                rowBuilder.Append(Fill(padding));
                 rowBuilder.Append(i == maxCols - 1 ? outerBorderChar : verticalChar);
             }
 
             var j = row.Length - 1;
             while (j++ < maxCols - 1)
             {
-                var maxColWidth = measurement.MaxColumnWidth(j, padding);
-                rowBuilder.Append(Padding(maxColWidth));
+                var maxColWidth = ColumnWidth(j, padding);
+                rowBuilder.Append(Fill(maxColWidth));
                 rowBuilder.Append(j == maxCols - 1 ? outerBorderChar : verticalChar);
                 j++;
             }
 
             return rowBuilder.ToString();
         }
-
-        private string Padding(int size, char paddingChar = ' ')
+        
+        private static string Fill(int size, char fillChar = ' ')
         {
-            return new string(paddingChar, Math.Max(size, 0));
+            return new string(fillChar, Math.Max(size, 0));
         }
 
         #endregion

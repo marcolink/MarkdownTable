@@ -13,5 +13,6 @@ namespace StringTable
         IStringTable SetHeader(params string[] header);
         IStringTable AddRow(params string[] labels);
         IStringTable SetRows(List<string[]> rows);
+        
     }
 }
