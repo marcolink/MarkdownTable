@@ -8,83 +8,83 @@ public class Example : MonoBehaviour
         var stringTable = new StringTableBuilder();
 
         var result = stringTable
-            .Title("Garage")
-            .Header("Name", "Manufacture", "Type", "Year")
-            .Row("Mary", "Aston Martin", "DB7", "1999")
-            .Row("Madeline", "Cadilac", "Eldorado", "1959")
-            .Row("Stephanie", "Chevrolet", "Bel Air", "1957")
-            .Row("Stacy", "Chevrolet", "Corvette Stingray", "1957")
-            .Row("Kate", "DeToamso", "Pantera", "1971")
-            .Print(null, true);
-        
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+            .SetTitle("Garage")
+            .SetHeader("Name", "Manufacture", "Type", "Year")
+            .AddRow("Mary", "Aston Martin", "DB7", "1999")
+            .AddRow("Madeline", "Cadilac", "Eldorado", "1959")
+            .AddRow("Stephanie", "Chevrolet", "Bel Air", "1957")
+            .AddRow("Stacy", "Chevrolet", "Corvette Stingray", "1957")
+            .AddRow("Kate", "DeToamso", "Pantera", "1971")
+            .ToString();
+
+        result += stringTable.ToDebugString();
 
         result += stringTable
-            .Title("Example Table")
-            .Header("11+padding*2", "Column Title", "Third", "Fourth")
-            .Row("", "012345689", "[1,2,3,4,5]", "4", "abc")
-            .Row("1", "012345689")
-            .Print(null, true);
+            .SetTitle("Example Table")
+            .SetHeader("11+padding*2", "Column Title", "Third", "Fourth")
+            .AddRow("", "012345689", "[1,2,3,4,5]", "4", "abc")
+            .AddRow("1", "012345689")
+            .ToString();
 
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
-
-        result += stringTable
-            .Title("Test Titles")
-            .Header("11+padding*2", "Second", "Third", "Fourth")
-            .Row("1", "2234433242423", "3", "4", "dsfds")
-            .Print(null, true);
-
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+        result += stringTable.ToDebugString();
 
         result += stringTable
-            .Reset()
-            .Title("Test Titles")
-            .Header("11+padding*2", "Second", "Third", "Fourth")
-            .Row("1", "23423423423", "334", "4")
-            .Print(null, true);
+            .SetTitle("Test Titles")
+            .SetHeader("11+padding*2", "Second", "Third", "Fourth")
+            .AddRow("1", "2234433242423", "3", "4", "dsfds")
+            .ToString();
 
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+        result += stringTable.ToDebugString();
 
         result += stringTable
             .Reset()
-            .Title("Test Titles")
-            .Header("Test Titles")
-            .Print(null, true);
+            .SetTitle("Test Titles")
+            .SetHeader("11+padding*2", "Second", "Third", "Fourth")
+            .AddRow("1", "23423423423", "334", "4")
+            .ToString();
 
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
-
-        result += stringTable
-            .Reset()
-            .Title("Test Titles+")
-            .Header("Test Titles")
-            .Print(null, true);
-
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+        result += stringTable.ToDebugString();
 
         result += stringTable
             .Reset()
-            .Title("Test Titles")
-            .Header("Test Titles+")
-            .Print(null, true);
+            .SetTitle("Test Titles")
+            .SetHeader("Test Titles")
+            .ToString();
 
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
-
-        result += stringTable
-            .Reset()
-            .Title("One Column Example")
-            .Header("1.")
-            .Row("data")
-            .Print(null, true);
-
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+        result += stringTable.ToDebugString();
 
         result += stringTable
             .Reset()
-            .Title("One Column Exmple")
-            .Row("data")
-            .Print(null, true);
+            .SetTitle("Test Titles+")
+            .SetHeader("Test Titles")
+            .ToString();
 
-        result += stringTable.Print(new DebugLayoutStrategy(), true);
+        result += stringTable.ToDebugString();
+
+        result += stringTable
+            .Reset()
+            .SetTitle("Test Titles")
+            .SetHeader("Test Titles+")
+            .ToString();
+
+        result += stringTable.ToDebugString();
+
+        result += stringTable
+            .Reset()
+            .SetTitle("One Column Example")
+            .SetHeader("1.")
+            .AddRow("data")
+            .ToString();
+
+        result += stringTable.ToDebugString();
+
+        result += stringTable
+            .Reset()
+            .SetTitle("One Column Exmple")
+            .AddRow("data")
+            .ToString();
+
+        result += stringTable.ToDebugString();
 
         Debug.Log(result);
     }

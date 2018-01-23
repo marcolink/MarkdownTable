@@ -3,7 +3,7 @@ using System.Text;
 
 namespace StringTable
 {
-    public class DefaultStringTableLayoutStrategy : BaseLayoutStrategy
+    public partial class StringTableBuilder
     {
         private readonly char verticalChar;
         private readonly char horizontalChar;
@@ -12,7 +12,7 @@ namespace StringTable
 
         private readonly StringBuilder rowBuilder = new StringBuilder();
 
-        public DefaultStringTableLayoutStrategy(bool debug = false)
+        public StringTableBuilder()
         {
             //Todo: create config object and setter
             outerBorderChar = '|';
@@ -20,11 +20,10 @@ namespace StringTable
             leftMargin = " ";
         }
 
-        public override string Layout(int padding = 0)
+        public string ToConsoleString()
         {
-
             var output = new StringBuilder();
-            var tableWidth = TableWidth(padding);
+            var tableWidth = TableWidth();
             var maxCols = MaxColumns();
 
             if (!string.IsNullOrEmpty(title))
@@ -37,14 +36,14 @@ namespace StringTable
             if (header.Length > 0)
             {
                 output.AppendLine(HorizontalLine(tableWidth));
-                output.AppendLine(Row(header, maxCols, tableWidth, padding));
+                output.AppendLine(Row(header, maxCols, tableWidth));
             }
 
             output.AppendLine(HorizontalLine(tableWidth));
 
             rows.ForEach(row =>
             {
-                output.AppendLine(Row(row, maxCols, tableWidth, padding));
+                output.AppendLine(Row(row, maxCols, tableWidth));
                 output.AppendLine(HorizontalLine(tableWidth));
             });
 
@@ -71,12 +70,13 @@ namespace StringTable
             var rightSpace = space - leftSpace;
 
             format = string.Format(format,
-                Fill(leftSpace - 2, '*') + Fill(1) + "{0}" + Fill(1) + Fill(rightSpace - 1, '*'));
+                Fill(Math.Max(leftSpace - 2, 0), '*') + Fill(1) + "{0}" + Fill(1) +
+                Fill(Math.Max(rightSpace - 1, 0), '*'));
 
             return string.Format(format, title);
         }
 
-        private string Row(string[] row, int maxCols, int tableWidth, int padding = 0, Align align = Align.Left)
+        private string Row(string[] row, int maxCols, int tableWidth, Align align = Align.Left)
         {
             //Todo: respect tableWidth issue:#2
 
@@ -98,18 +98,13 @@ namespace StringTable
             var j = row.Length - 1;
             while (j++ < maxCols - 1)
             {
-                var maxColWidth = ColumnWidth(j, padding);
+                var maxColWidth = ColumnWidth(j);
                 rowBuilder.Append(Fill(maxColWidth));
                 rowBuilder.Append(j == maxCols - 1 ? outerBorderChar : verticalChar);
                 j++;
             }
 
             return rowBuilder.ToString();
-        }
-        
-        private static string Fill(int size, char fillChar = ' ')
-        {
-            return new string(fillChar, Math.Max(size, 0));
         }
 
         #endregion
