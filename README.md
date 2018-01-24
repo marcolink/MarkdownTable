@@ -3,7 +3,7 @@ A Simple StringBuilder for printing well formed tables.
 
 ## Example
 
-###Direct use of *StringTableBuilder*
+### Direct use of *StringTableBuilder*
 
 **Input**
 
@@ -35,7 +35,7 @@ Stacy     | Chevrolet    | Corvette Stingray | 1957
 Kate      | DeToamso     | Pantera           | 1971  
 ```
 
-###IEnumerable<T> Extension
+### IEnumerable<T> Extension
 
 **Input**
 
