@@ -1,88 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StringTable
 {
     public partial class StringTableBuilder
     {
-        private string title;
         private string[] header = { };
         private readonly List<string[]> rows = new List<string[]>();
-        private int padding;
 
         private enum Align
         {
             Left,
             Right,
+            Center
         }
 
-        public StringTableBuilder SetTitle(string title)
-        {
-            this.title = title;
-            return this;
-        }
-
-        public StringTableBuilder SetHeader(params string[] header)
+        public StringTableBuilder WithHeader(params string[] header)
         {
             this.header = header;
             return this;
         }
 
-        public StringTableBuilder SetPadding(int padding = 0)
-        {
-            this.padding = padding;
-            return this;
-        }
-
-        public StringTableBuilder AddRow(params string[] row)
+        public StringTableBuilder WithRow(params string[] row)
         {
             rows.Add(row);
             return this;
         }
-        
-        public StringTableBuilder Reset()
+
+        public StringTableBuilder Clear()
         {
-            title = string.Empty;
             header = new string[] { };
             rows.Clear();
             return this;
         }
 
-        private int TableWidth()
-        {
-            int result = 1;
-
-            var colsCount = MaxColumns();
-
-            for (var i = 0; i < colsCount; i++)
-            {
-                result += ColumnWidth(i) + 1;
-            }
-
-            if (!string.IsNullOrEmpty(title) && title.Length + 2 > result)
-            {
-                result = title.Length + 2;
-            }
-
-            return result;
-        }
-
         private int ColumnWidth(int index)
         {
-            var width = padding * 2;
+            var width = 1;
 
-            if (header != null && header.Length - 1 >= index)
+            if (header != null && index < header.Length)
             {
-                width =  (header[index].Length + 2 * padding);
+                width = header[index].Length;
             }
 
-            rows.ForEach(row =>
-            {
-                var colWidth = row[Math.Min(index, row.Length - 1)].Length + 2 * padding;
-                width = Math.Max(width, colWidth);
-            });
-
-            return width;
+            return Column(index).Length == 0
+                ? 1
+                : Math.Max(width,
+                    Column(index).Max(r => r != null ? r.Length : 0));
         }
 
         private int[] SizeRow()
@@ -129,7 +94,7 @@ namespace StringTable
             rows.ForEach(row => { column.Add(index < row.Length ? row[index] : null); });
             return column.ToArray();
         }
-        
+
         private static string Fill(int size, char fillChar = ' ')
         {
             return new string(fillChar, Math.Max(size, 0));
