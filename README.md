@@ -72,7 +72,8 @@ var typedGarage = new List<Car>
 	new Car {Name = "Stacy", Manufacturer = "Chevrolet", Type = "Corvette Stingray", Year = 1957},
 	new Car {Name = "Kate", Manufacturer = "DeTomaso", Type = "Pantera", Year = 1971}
 }
-    
+ 
+Debug.Log(typedGarage.ToMardownTableString()); 
 ```
 
 **Output** 
