@@ -8,7 +8,7 @@ namespace StringTable
     public class StringTableBuilder
     {
         private string[] header = { };
-        private readonly List<string[]> rows = new List<string[]>();
+        private readonly List<object[]> rows = new List<object[]>();
 
         private readonly char verticalChar;
         private readonly char horizontalChar;
@@ -41,7 +41,7 @@ namespace StringTable
             return this;
         }
 
-        public StringTableBuilder WithRow(params string[] row)
+        public StringTableBuilder WithRow(params object[] row)
         {
             rows.Add(row);
             return this;
@@ -132,7 +132,7 @@ namespace StringTable
         private string[] Column(int index)
         {
             var column = new List<string>();
-            rows.ForEach(row => { column.Add(index < row.Length ? row[index] : null); });
+            rows.ForEach(row => { column.Add(index < row.Length ? row[index].ToString() : null); });
             return column.ToArray();
         }
 
@@ -154,7 +154,7 @@ namespace StringTable
             return string.Format(format, content);
         }
 
-        private string Row(string[] row, int maxCols, Align align = Align.Left)
+        private string Row(object[] row, int maxCols, Align align = Align.Left)
         {
             rowBuilder.Length = 0;
             rowBuilder.Append(outerBorderChar);
@@ -163,7 +163,6 @@ namespace StringTable
             {
                 var maxColWidth = ColumnWidth(i);
                 var format = "{0,-" + maxColWidth + "}";
-
 
                 rowBuilder.Append(Fill(padding));
                 rowBuilder.Append(string.Format(format, row[i]));
