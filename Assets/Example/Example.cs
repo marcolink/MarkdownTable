@@ -16,7 +16,7 @@ public class Example : MonoBehaviour
             new {Name = "Kate", Manufacturer = "DeTomaso", Type = "Pantera", Year = 1971}
         };
 
-        //Debug.Log(garage.ToMardownString());
+        Debug.Log(garage.ToMardownTableString());
 
         var typedGarage = new List<Car>
         {
@@ -33,7 +33,8 @@ public class Example : MonoBehaviour
             }
         };
 
-        Debug.Log(typedGarage.ToMardownString());
+        typedGarage.ToMardownTableString();
+        Debug.Log(typedGarage.ToMardownTableString());
 
         var stringTable = new StringTableBuilder();
 
@@ -59,6 +60,6 @@ public class Example : MonoBehaviour
         public float Length;
         public float Weight;
         public float Torque;
-        //public Array SomeArray;
+        public Array colors;
     }
 }

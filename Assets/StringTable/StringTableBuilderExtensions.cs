@@ -6,14 +6,14 @@ namespace StringTable
 {
     public static class StringTableBuilderExtensions
     {
-        public static string ToMardownString<T>(this IEnumerable<T> rows)
+        public static string ToMardownTableString<T>(this IEnumerable<T> rows)
         {
             var builder = new StringTableBuilder();
-            var properties = typeof(T).GetProperties();//.Where(p => IsValidType(p.ReflectedType));
-            var fields = typeof(T).GetFields();//.Where(p => IsValidType(p.FieldType));
+            var properties = typeof(T).GetProperties().Where(p => p.PropertyType.IsRenderable()).ToArray();
+            var fields = typeof(T).GetFields().Where(f => f.FieldType.IsRenderable()).ToArray();
 
             builder.WithHeader(properties.Select(p => p.Name).Concat(fields.Select(f => f.Name)).ToArray());
-            
+
             foreach (var row in rows)
             {
                 builder.WithRow(properties.Select(p => p.GetValue(row, null))
@@ -23,9 +23,38 @@ namespace StringTable
             return builder.ToString();
         }
 
-        private static bool IsValidType(Type type)
+        private static bool IsRenderable(this Type type)
         {
-            return true;
+            return type.IsNumeric()
+                   || Type.GetTypeCode(type) == TypeCode.String
+                   || Type.GetTypeCode(type) == TypeCode.Boolean;
+        }
+
+        private static bool IsNumeric(this Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    return true;
+                case TypeCode.Object:
+                    if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        return Nullable.GetUnderlyingType(type).IsNumeric();
+                    }
+                    return false;
+                default:
+                    return false;
+            }
         }
     }
 }
