@@ -9,16 +9,14 @@ A Simple StringBuilder for printing well formed tables.
 var stringTable = new StringTable.StringTableBuilder();
 		
 var result = stringTable
- 	.Title("Garage")
-	.Header("Name", "Manufacture", "Type", "Year")
-	.Row("Mary", "Aston Martin", "DB7", "1999")
-	.Row("Madeline", "Cadilac", "Eldorado", "1959")
-	.Row("Stephanie", "Chevrolet", "Bel Air", "1957")
-	.Row("Stacy", "Chevrolet", "Corvette Stingray", "1957")
-	.Row("Kate", "DeToamso", "Pantera", "1971")
-  .Print();
+ 	.WithHeader("Name", "Manufacture", "Type", "Year")
+	.WithRow("Mary", "Aston Martin", "DB7", "1999")
+	.WithRow("Madeline", "Cadilac", "Eldorado", "1959")
+	.WithRow("Stephanie", "Chevrolet", "Bel Air", "1957")
+	.WithRow("Stacy", "Chevrolet", "Corvette Stingray", "1957")
+	.WithRow("Kate", "DeToamso", "Pantera", "1971");
 
-Debug.Log(result);
+Debug.Log(result.ToString());
 ```
 
 ### IEnumerable<T> Extension with *object*
