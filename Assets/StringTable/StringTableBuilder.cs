@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace StringTable
 {
-    public partial class StringTableBuilder
+    public class StringTableBuilder
     {
         private string[] header = { };
         private readonly List<string[]> rows = new List<string[]>();
+
+        private readonly char verticalChar;
+        private readonly char horizontalChar;
+        private readonly char outerBorderChar;
+        private readonly int padding;
+        private readonly int minColumnWidth;
+        private readonly StringBuilder rowBuilder;
 
         private enum Align
         {
@@ -15,6 +23,17 @@ namespace StringTable
             Right,
             Center
         }
+
+        public StringTableBuilder()
+        {
+            rowBuilder = new StringBuilder();
+            horizontalChar = '-';
+            outerBorderChar = ' ';
+            verticalChar = '|';
+            padding = 1;
+        }
+
+        #region Interface
 
         public StringTableBuilder WithHeader(params string[] header)
         {
@@ -34,6 +53,27 @@ namespace StringTable
             rows.Clear();
             return this;
         }
+
+        public override string ToString()
+        {
+            var output = new StringBuilder();
+            var maxCols = MaxColumns();
+
+            if (header.Length > 0)
+            {
+                output.AppendLine(Row(header, maxCols));
+            }
+
+            output.AppendLine(HorizontalLine());
+
+            rows.ForEach(row => { output.AppendLine(Row(row, maxCols)); });
+
+            return output.ToString();
+        }
+
+        #endregion
+
+        #region Calculation
 
         private int ColumnWidth(int index)
         {
@@ -70,6 +110,7 @@ namespace StringTable
             for (var i = 0; i < maxCols; i++)
             {
                 var alignment = Align.Left;
+
                 row.Add(alignment);
             }
 
@@ -95,9 +136,52 @@ namespace StringTable
             return column.ToArray();
         }
 
+        #endregion
+
+        #region Creation
+
         private static string Fill(int size, char fillChar = ' ')
         {
             return new string(fillChar, Math.Max(size, 0));
         }
+
+        private string HorizontalLine()
+        {
+            var format = Fill(1, outerBorderChar) + "{0}" + Fill(1, outerBorderChar);
+            var content = SizeRow()
+                .Select(col => Fill(col + 2 * padding, horizontalChar))
+                .Aggregate((a, b) => a + Fill(1, verticalChar) + b);
+            return string.Format(format, content);
+        }
+
+        private string Row(string[] row, int maxCols, Align align = Align.Left)
+        {
+            rowBuilder.Length = 0;
+            rowBuilder.Append(outerBorderChar);
+
+            for (var i = 0; i < row.Length; i++)
+            {
+                var maxColWidth = ColumnWidth(i);
+                var format = "{0,-" + maxColWidth + "}";
+
+
+                rowBuilder.Append(Fill(padding));
+                rowBuilder.Append(string.Format(format, row[i]));
+                rowBuilder.Append(Fill(padding));
+                rowBuilder.Append(i == maxCols - 1 ? outerBorderChar : verticalChar);
+            }
+
+            var j = row.Length - 1;
+            while (j++ < maxCols - 1)
+            {
+                var maxColWidth = ColumnWidth(j);
+                rowBuilder.Append(Fill(maxColWidth + 2 * padding));
+                rowBuilder.Append(j == maxCols - 1 ? outerBorderChar : verticalChar);
+            }
+
+            return rowBuilder.ToString();
+        }
+
+        #endregion
     }
 }
