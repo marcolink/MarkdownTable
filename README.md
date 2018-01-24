@@ -5,8 +5,6 @@ A Simple StringBuilder for printing well formed tables.
 
 ### Direct use of *StringTableBuilder*
 
-**Input**
-
 ```csharp
 var stringTable = new StringTable.StringTableBuilder();
 		
@@ -23,19 +21,7 @@ var result = stringTable
 Debug.Log(result);
 ```
 
-**Output** 
-
-```
-Name      | Manufacturer | Type              | Year  
-----------|--------------|-------------------|----- 
-Mary      | Aston Martin | DB7               | 1999  
-Madeline  | Cadilac      | Eldorado          | 1959  
-Stephanie | Chevrolet    | Bel Air           | 1957  
-Stacy     | Chevrolet    | Corvette Stingray | 1957  
-Kate      | DeToamso     | Pantera           | 1971  
-```
-
-### IEnumerable<T> Extension
+### IEnumerable<T> Extension with *object*
 
 **Input**
 
@@ -52,7 +38,7 @@ var garage = new[]
 Debug.Log(garage.ToMardownTableString());
 ```
 
-or
+### IEnumerable<T> Extension with custom type
 
 ```csharp
 
@@ -76,7 +62,7 @@ var typedGarage = new List<Car>
 Debug.Log(typedGarage.ToMardownTableString()); 
 ```
 
-**Output** 
+### Output 
 
 ```
 Name      | Manufacturer | Type              | Year  
@@ -87,3 +73,10 @@ Stephanie | Chevrolet    | Bel Air           | 1957
 Stacy     | Chevrolet    | Corvette Stingray | 1957  
 Kate      | DeToamso     | Pantera           | 1971  
 ```
+Name      | Manufacturer | Type              | Year  
+----------|--------------|-------------------|----- 
+Mary      | Aston Martin | DB7               | 1999  
+Madeline  | Cadilac      | Eldorado          | 1959  
+Stephanie | Chevrolet    | Bel Air           | 1957  
+Stacy     | Chevrolet    | Corvette Stingray | 1957  
+Kate      | DeToamso     | Pantera           | 1971  
