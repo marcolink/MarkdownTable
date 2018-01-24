@@ -7,7 +7,7 @@ namespace StringTable
     {
         private string title;
         private string[] header = { };
-        private List<string[]> rows = new List<string[]>();
+        private readonly List<string[]> rows = new List<string[]>();
         private int padding;
 
         private enum Align
@@ -28,21 +28,15 @@ namespace StringTable
             return this;
         }
 
-        public StringTableBuilder SetRows(List<string[]> rows)
-        {
-            this.rows = rows;
-            return this;
-        }
-
         public StringTableBuilder SetPadding(int padding = 0)
         {
             this.padding = padding;
             return this;
         }
 
-        public StringTableBuilder AddRow(params string[] labels)
+        public StringTableBuilder AddRow(params string[] row)
         {
-            rows.Add(labels);
+            rows.Add(row);
             return this;
         }
         

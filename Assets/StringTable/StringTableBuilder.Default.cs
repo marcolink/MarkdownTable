@@ -8,19 +8,18 @@ namespace StringTable
         private readonly char verticalChar;
         private readonly char horizontalChar;
         private readonly char outerBorderChar;
-        private readonly string leftMargin;
+        private readonly int indent;
 
         private readonly StringBuilder rowBuilder = new StringBuilder();
 
         public StringTableBuilder()
         {
-            //Todo: create config object and setter
             outerBorderChar = '|';
             verticalChar = '|';
-            leftMargin = " ";
+            indent = 0;
         }
 
-        public string ToConsoleString()
+        public override string ToString()
         {
             var output = new StringBuilder();
             var tableWidth = TableWidth();
@@ -28,7 +27,7 @@ namespace StringTable
 
             if (!string.IsNullOrEmpty(title))
             {
-                output.AppendLine(leftMargin);
+                output.AppendLine(Fill(indent));
                 output.AppendLine(HorizontalLine(tableWidth));
                 output.AppendLine(TitleRow(tableWidth));
             }
@@ -54,12 +53,12 @@ namespace StringTable
 
         private string HorizontalLine(int tableWidth, char spaceChar = '-')
         {
-            return string.Format("{0}{1}", leftMargin, new string(spaceChar, tableWidth));
+            return string.Format("{0}{1}", Fill(indent), new string(spaceChar, tableWidth));
         }
 
         private string TitleRow(int tableWidth)
         {
-            var format = leftMargin + outerBorderChar + "{0}" + outerBorderChar;
+            var format = Fill(indent) + outerBorderChar + "{0}" + outerBorderChar;
             if (string.IsNullOrEmpty(title) || tableWidth <= title.Length + 3)
             {
                 return string.Format(format, title);
@@ -81,7 +80,7 @@ namespace StringTable
             //Todo: respect tableWidth issue:#2
 
             rowBuilder.Length = 0;
-            rowBuilder.Append(leftMargin);
+            rowBuilder.Append(Fill(indent));
             rowBuilder.Append(outerBorderChar);
 
             for (var i = 0; i < row.Length; i++)

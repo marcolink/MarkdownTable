@@ -24,6 +24,7 @@ public class Example : MonoBehaviour
             .SetHeader("11+padding*2", "Column Title", "Third", "Fourth")
             .AddRow("", "012345689", "[1,2,3,4,5]", "4", "abc")
             .AddRow("1", "012345689")
+            .SetPadding(1)
             .ToString();
 
         result += stringTable.ToDebugString();
