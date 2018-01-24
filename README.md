@@ -6,9 +6,7 @@ A Simple StringBuilder for printing well formed tables.
 ### Direct use of *StringTableBuilder*
 
 ```csharp
-var stringTable = new StringTable.StringTableBuilder();
-		
-var result = stringTable
+var stringTable = new StringTable.StringTableBuilder()		
  	.WithHeader("Name", "Manufacture", "Type", "Year")
 	.WithRow("Mary", "Aston Martin", "DB7", "1999")
 	.WithRow("Madeline", "Cadilac", "Eldorado", "1959")
@@ -16,12 +14,10 @@ var result = stringTable
 	.WithRow("Stacy", "Chevrolet", "Corvette Stingray", "1957")
 	.WithRow("Kate", "DeToamso", "Pantera", "1971");
 
-Debug.Log(result.ToString());
+Debug.Log(stringTable.ToString());
 ```
 
 ### IEnumerable<T> Extension with *object*
-
-**Input**
 
 ```csharp
 var garage = new[]
@@ -36,7 +32,7 @@ var garage = new[]
 Debug.Log(garage.ToMardownTableString());
 ```
 
-### IEnumerable<T> Extension with custom type
+### IEnumerable<T> Extension with *custom type*
 
 ```csharp
 
@@ -60,7 +56,7 @@ var typedGarage = new List<Car>
 Debug.Log(typedGarage.ToMardownTableString()); 
 ```
 
-### Output 
+### Log Output 
 
 ```
 Name      | Manufacturer | Type              | Year  
@@ -71,6 +67,7 @@ Stephanie | Chevrolet    | Bel Air           | 1957
 Stacy     | Chevrolet    | Corvette Stingray | 1957  
 Kate      | DeToamso     | Pantera           | 1971  
 ```
+ 
 Name      | Manufacturer | Type              | Year  
 ----------|--------------|-------------------|----- 
 Mary      | Aston Martin | DB7               | 1999  
