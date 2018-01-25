@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Tests.Editor
 {
-    public class StringTableBuilderTest
+    public class MarkdownTableBuilderTest
     {
         private StringBuilder builder;
 

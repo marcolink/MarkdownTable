@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StringTable
+namespace MarkdownTable
 {
-    public class StringTableBuilder
+    public class MarkdownTableBuilder
     {
         private string[] header = { };
         private readonly List<object[]> rows = new List<object[]>();
@@ -24,7 +24,7 @@ namespace StringTable
             Center
         }
 
-        public StringTableBuilder()
+        public MarkdownTableBuilder()
         {
             rowBuilder = new StringBuilder();
             horizontalChar = '-';
@@ -35,19 +35,19 @@ namespace StringTable
 
         #region Interface
 
-        public StringTableBuilder WithHeader(params string[] header)
+        public MarkdownTableBuilder WithHeader(params string[] header)
         {
             this.header = header;
             return this;
         }
 
-        public StringTableBuilder WithRow(params object[] row)
+        public MarkdownTableBuilder WithRow(params object[] row)
         {
             rows.Add(row);
             return this;
         }
 
-        public StringTableBuilder Clear()
+        public MarkdownTableBuilder Clear()
         {
             header = new string[] { };
             rows.Clear();

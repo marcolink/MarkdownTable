@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StringTable
+namespace MarkdownTable
 {
-    public static class StringTableBuilderExtensions
+    public static class MarkdownTableBuilderExtensions
     {
         public static string ToMardownTableString<T>(this IEnumerable<T> rows)
         {
-            var builder = new StringTableBuilder();
+            var builder = new MarkdownTableBuilder();
             var properties = typeof(T).GetProperties().Where(p => p.PropertyType.IsRenderable()).ToArray();
             var fields = typeof(T).GetFields().Where(f => f.FieldType.IsRenderable()).ToArray();
 

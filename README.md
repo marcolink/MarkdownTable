@@ -1,12 +1,12 @@
-# StringTableBuilder
-A Simple StringBuilder for printing well formed tables.
+# MarkdownTable
+A Simple Markdown table builder for Unity (works also on normal c# projects).
 
-## Example
+## Usage
 
-### Direct use of *StringTableBuilder*
+### Direct use of *MarkdownTableBuilder*
 
 ```csharp
-var stringTable = new StringTable.StringTableBuilder()		
+var builder = new MarkdownTable.MarkdownTableBuilder()
  	.WithHeader("Name", "Manufacture", "Type", "Year")
 	.WithRow("Mary", "Aston Martin", "DB7", "1999")
 	.WithRow("Madeline", "Cadilac", "Eldorado", "1959")
@@ -14,10 +14,10 @@ var stringTable = new StringTable.StringTableBuilder()
 	.WithRow("Stacy", "Chevrolet", "Corvette Stingray", "1957")
 	.WithRow("Kate", "DeToamso", "Pantera", "1971");
 
-Debug.Log(stringTable.ToString());
+Debug.Log(builder.ToString());
 ```
 
-### IEnumerable<T> Extension with *object*
+### *IEnumerable<T>* Extension
 
 ```csharp
 var garage = new[]
@@ -32,30 +32,6 @@ var garage = new[]
 Debug.Log(garage.ToMardownTableString());
 ```
 
-### IEnumerable<T> Extension with *custom type*
-
-```csharp
-
-public class Car
-{
-	public string Name;
-	public string Manufacturer;
-	public string Type;
-	public uint Year;
-}
-
-var typedGarage = new List<Car>
-{
-	new Car {Name = "Mary", Manufacturer = "Aston Martin", Type = "DB7", Year = 1999},
-	new Car {Name = "Madeline", Manufacturer = "Cadilac", Type = "Eldorado", Year = 1959},
-	new Car {Name = "Stephanie", Manufacturer = "Chevrolet", Type = "Bel Air", Year = 1957},
-	new Car {Name = "Stacy", Manufacturer = "Chevrolet", Type = "Corvette Stingray", Year = 1957},
-	new Car {Name = "Kate", Manufacturer = "DeTomaso", Type = "Pantera", Year = 1971}
-}
- 
-Debug.Log(typedGarage.ToMardownTableString()); 
-```
-
 ### Log Output 
 
 ```
@@ -67,6 +43,8 @@ Stephanie | Chevrolet    | Bel Air           | 1957
 Stacy     | Chevrolet    | Corvette Stingray | 1957  
 Kate      | DeToamso     | Pantera           | 1971  
 ```
+
+The output can be used as normal markup: 
  
 Name      | Manufacturer | Type              | Year  
 ----------|--------------|-------------------|----- 
@@ -75,3 +53,19 @@ Madeline  | Cadilac      | Eldorado          | 1959
 Stephanie | Chevrolet    | Bel Air           | 1957  
 Stacy     | Chevrolet    | Corvette Stingray | 1957  
 Kate      | DeToamso     | Pantera           | 1971  
+
+### Supported *Property/Field* Types:
+
+* TypeCode.String
+* TypeCode.Boolean
+* TypeCode.Decimal
+* TypeCode.Double
+* TypeCode.Single
+* TypeCode.Byte
+* TypeCode.Int16
+* TypeCode.Int32
+* TypeCode.Int64
+* TypeCode.SByte
+* TypeCode.UInt16
+* TypeCode.UInt32
+* TypeCode.UInt64
