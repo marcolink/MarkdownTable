@@ -1,12 +1,12 @@
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
+/Unity.MarkdownTable/[Ll]ibrary/
+/Unity.MarkdownTable/[Tt]emp/
+/Unity.MarkdownTable/[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
-/Assets/AssetStoreTools*
-/UnityPackageManager/
+/Unity.MarkdownTable/Assets/AssetStoreTools*
+/Unity.MarkdownTable/UnityPackageManager/
 .idea/
-Wooga.JsonPerformance/Assets/Plugins/Editor/JetBrains
+/Unity.MarkdownTable/Assets/Plugins/Editor/JetBrains
 
 # Visual Studio 2015 cache directory
 /.vs/
@@ -35,3 +35,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+.gradle/

@@ -1,0 +1,60 @@
+plugins {
+    id 'net.wooga.unity' version '0.16.1'
+    id 'net.wooga.github' version '0.6.1'
+    id 'net.wooga.paket' version '0.10.1'
+}
+
+// if version is set, property from paket.template will be overriden
+version = "0.1.0"
+
+// export unity package
+exportUnityPackage {
+    inputFiles file("Unity.MarkdownTable/Assets/MarkdownTable")
+}
+
+// define batchmode task for unitypackage creation
+unity {
+  defaultBuildTarget = "android"
+  projectPath = file("Unity.MarkdownTable")
+}
+
+// Define publish task for nuget
+publishing {
+    repositories {
+        nuget {
+            name "nuget"
+            url "https://www.nuget.org/api/v2/package"
+        }
+    }
+}
+
+// Define publish task for github (releases)
+githubPublish {
+    repositoryName "marcolink/MarkdownTable"
+    draft = true
+    tagName = project.version
+    releaseName = project.version
+    from configurations.archives
+}
+
+// add binaries to release 
+configurations.archives.extendsFrom(configurations.nupkg)
+configurations.archives.extendsFrom(configurations.unitypackage)
+
+githubPublish.dependsOn {configurations.archives}
+githubPublish.dependsOn {configurations.unitypackage}
+
+project.afterEvaluate {
+    Configuration paketConfiguration = project.configurations.nupkg
+    Configuration unitypackageConfiguration = project.configurations.unitypackage
+
+    paketConfiguration.allArtifacts.each {
+        println(it.file)
+        project.dependencies.add("archives", project.files(it.file).builtBy(it.buildDependencies))
+    }
+
+    unitypackageConfiguration.allArtifacts.each {
+        println(it.file)
+        project.dependencies.add("archives", project.files(it.file).builtBy(it.buildDependencies))
+    }
+}

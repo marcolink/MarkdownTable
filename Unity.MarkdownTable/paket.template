@@ -1,0 +1,22 @@
+type file
+id MarkdownTable
+owners Marco Link
+authors Marco Link
+projectUrl
+    https://github.com/marcolink/MarkdownTable
+licenseUrl
+    https://github.com/marcolink/MarkdownTable/blob/master/LICENSE
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2018
+tags
+    unity
+summary
+    A simple String Matcher Builder
+description
+    A Simple string matcher builder for Unity (works also on normal c# projects).
+files
+    Unity.MarkdownTable/Assets/MarkdownTable/**/* ==> content
+    !../**/AssemblyInfo.cs
+    ../README.md ==> content
